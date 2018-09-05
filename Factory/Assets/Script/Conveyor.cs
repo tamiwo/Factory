@@ -9,32 +9,29 @@ public class Conveyor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Vector3 vec = new Vector3( speed, 0.0f, 0.0f );
-        dir = Quaternion.Euler(transform.localRotation.eulerAngles) * vec;
-        Debug.Log(name + "'s dir:" + dir);
 	}
 	
 	// Update is called once per frame
     void Update () {
-		
 	}
 
     void OnTriggerEnter ( Collider col ) {
-        Debug.Log("Collision: " + col.gameObject.tag);
+        Debug.Log("Collision: " + col.gameObject.name);
     }
 
     void OnTriggerStay ( Collider col ) {
-        Transform t = col.gameObject.transform;
-        /*
-        float diffCentor = t.localPosition.z - transform.localPosition.z;
-        float newZ = 0.0f;
-        if( diffCentor > 0 ){
-            newZ = -speed;
-        }
-        else if( diffCentor < 0 ){
-            newZ = speed;
-        }
-        */
-        t.localPosition += dir;
+        // 運び先までの長さ
+        // colliderの外に出すために1.01かけて少し前にしておく
+        Vector3 length = transform.forward * transform.localScale.x / 2 * 1.01f;
+        // 運びたい先の座標
+        Vector3 target = transform.position + length;
+        // 運ぶモノの位置
+        Transform t = col.transform;
+        // 差分
+        Vector3 diff = target - t.position;
+        // 高さの違いは無視する
+        diff = new Vector3(diff.x, 0.0f, diff.z);
+        // 一定速度で移動する
+        t.position += diff.normalized * speed;
     }
 }
