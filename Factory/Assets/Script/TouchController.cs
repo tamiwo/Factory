@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchControler : MonoBehaviour {
+public class TouchController : MonoBehaviour {
 
     private Vector3 touchPos;
     private bool isTouching;      // タッチ中かな？
